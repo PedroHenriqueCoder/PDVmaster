@@ -1,74 +1,44 @@
 package com.masterPdv.MasterPdv.model.entites;
 
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
-import com.masterPdv.MasterPdv.security.Permissao;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
+@Entity
+@Table(name = "tb_atendente")
 public class Atendente extends Usuario {
 
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	
+	@Column(name = "nome_completo")
 	private String nomeCompleto;
+	
 	private Double salario;
+	
+	@Column(name = "quantidade_faltas")
 	private Integer numeroFaltas;
+	
+	@Column(name = "houve_falta")
 	private boolean ouveFalta;
-	private Integer[] numeroFila = new Integer[9];
-
-	public Atendente(Long id, String nomeCompleto, Double salario, Integer numeroFaltas, boolean ouveFalta,
-			Integer[] numeroFila) {
-		if(numeroFila.length > 9) throw new IllegalArgumentException("O tamanho máximo da fila é 9.");
-		this.id = id;
-		this.nomeCompleto = nomeCompleto;
-		this.salario = salario;
-		this.numeroFaltas = numeroFaltas;
-		this.ouveFalta = ouveFalta;
-		this.numeroFila = numeroFila;
-	}
+	
+	private Set<Caixa> caixas = new HashSet<>();
 
 	public Atendente() {
 
 	}
 
-	public Long getId() {
-		return id;
-	}
 
-	public void setId(Long id) {
-		this.id = id;
-	}
 
-	public String getNomeCompleto() {
-		return nomeCompleto;
-	}
-
-	public void setNomeCompleto(String nomeCompleto) {
-		this.nomeCompleto = nomeCompleto;
-	}
-
-	public Integer getNumeroFaltas() {
-		return numeroFaltas;
-	}
-
-	public void setNumeroFaltas(Integer numeroFaltas) {
-		this.numeroFaltas = numeroFaltas;
-	}
-
-	public boolean isOuveFalta() {
-		return ouveFalta;
-	}
-
-	public void setOuveFalta(boolean ouveFalta) {
-		this.ouveFalta = ouveFalta;
-	}
-
-	public Integer[] getNumeroFila() {
-		return numeroFila;
-	}
-
-	public void setNumeroFila(Integer[] numeroFila) {
-		this.numeroFila = numeroFila;
-	}
 
 	@Override
 	public String getEmail() {
@@ -146,15 +116,23 @@ public class Atendente extends Usuario {
 				&& Arrays.equals(numeroFila, other.numeroFila);
 	}
 
+	public Double getSalario() {
+		return salario;
+	}
+
+	public void setSalario(Double salario) {
+		this.salario = salario;
+	}
+
 	public void adicionarAtendenteFila(int idAtendente) {
-		for(Integer atendente : numeroFila) {
-			if(atendente != null  && atendente.equals(idAtendente)) {
-	            throw new IllegalStateException("O atendente já está na fila.");
+		for (Integer atendente : numeroFila) {
+			if (atendente != null && atendente.equals(idAtendente)) {
+				throw new IllegalStateException("O(a) atendente já está na fila.");
 			}
 		}
-	
-		for(int i = 0; i < numeroFila.length; i++) {
-			if(numeroFila[i] == null) {
+
+		for (int i = 0; i < numeroFila.length; i++) {
+			if (numeroFila[i] == null) {
 				numeroFila[i] = idAtendente;
 				return;
 			}
@@ -165,11 +143,11 @@ public class Atendente extends Usuario {
 
 	public void removerAtendenteFila(int idAtendente) {
 		for (int i = 0; i < numeroFila.length; i++) {
-			if(numeroFila[i] != null && numeroFila[i].equals(idAtendente))
-			if (numeroFila[i] != null) {
-				numeroFila[i] = null;
-				return;
-			}
+			if (numeroFila[i] != null && numeroFila[i].equals(idAtendente))
+				if (numeroFila[i] != null) {
+					numeroFila[i] = null;
+					return;
+				}
 		}
 
 		throw new IllegalStateException("A fila já atingiu o tamanho máximo de 9.");

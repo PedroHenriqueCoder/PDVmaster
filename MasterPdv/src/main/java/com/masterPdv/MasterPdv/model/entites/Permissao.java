@@ -1,4 +1,4 @@
-package com.masterPdv.MasterPdv.security;
+package com.masterPdv.MasterPdv.model.entites;
 
 import java.util.Objects;
 
