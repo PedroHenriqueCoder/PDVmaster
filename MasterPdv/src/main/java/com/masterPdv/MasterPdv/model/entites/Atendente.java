@@ -19,26 +19,84 @@ public class Atendente extends Usuario {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
+
 	@Column(name = "nome_completo")
 	private String nomeCompleto;
-	
+
 	private Double salario;
-	
+
 	@Column(name = "quantidade_faltas")
 	private Integer numeroFaltas;
-	
+
+	@Column(name = "freq_vendas")
+	private Integer quantidadeVendas;
+
 	@Column(name = "houve_falta")
 	private boolean ouveFalta;
-	
+
 	private Set<Caixa> caixas = new HashSet<>();
+
+	public Atendente(Long id, String nomeCompleto, Double salario, Integer numeroFaltas, Integer quantidadeVendas,
+			boolean ouveFalta, Set<Caixa> caixas) {
+		super();
+		this.id = id;
+		this.nomeCompleto = nomeCompleto;
+		this.salario = salario;
+		this.numeroFaltas = numeroFaltas;
+		this.quantidadeVendas = quantidadeVendas;
+		this.ouveFalta = ouveFalta;
+		this.caixas = caixas;
+	}
 
 	public Atendente() {
 
 	}
 
+	public Long getId() {
+		return id;
+	}
 
+	public void setId(Long id) {
+		this.id = id;
+	}
 
+	public String getNomeCompleto() {
+		return nomeCompleto;
+	}
+
+	public void setNomeCompleto(String nomeCompleto) {
+		this.nomeCompleto = nomeCompleto;
+	}
+
+	public Integer getQuantidadeVendas() {
+		return quantidadeVendas;
+	}
+
+	public void setQuantidadeVendas(Integer quantidadeVendas) {
+		this.quantidadeVendas = quantidadeVendas;
+	}
+
+	public Integer getNumeroFaltas() {
+		return numeroFaltas;
+	}
+
+	public void setNumeroFaltas(Integer numeroFaltas) {
+		this.numeroFaltas = numeroFaltas;
+	}
+
+	public boolean isOuveFalta() {
+		return ouveFalta;
+	}
+
+	public void setOuveFalta(boolean ouveFalta) {
+		this.ouveFalta = ouveFalta;
+	}
+
+	public Set<Caixa> getCaixas() throws Exception {
+		if (caixas.isEmpty())
+			throw new Exception("Não há atendes na caixa!");
+		return caixas;
+	}
 
 	@Override
 	public String getEmail() {
@@ -94,12 +152,19 @@ public class Atendente extends Usuario {
 		return super.getPermissoes();
 	}
 
+	public Double getSalario() {
+		return salario;
+	}
+
+	public void setSalario(Double salario) {
+		this.salario = salario;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = super.hashCode();
-		result = prime * result + Arrays.hashCode(numeroFila);
-		result = prime * result + Objects.hash(id, nomeCompleto);
+		result = prime * result + Objects.hash(id);
 		return result;
 	}
 
@@ -112,52 +177,13 @@ public class Atendente extends Usuario {
 		if (getClass() != obj.getClass())
 			return false;
 		Atendente other = (Atendente) obj;
-		return Objects.equals(id, other.id) && Objects.equals(nomeCompleto, other.nomeCompleto)
-				&& Arrays.equals(numeroFila, other.numeroFila);
-	}
-
-	public Double getSalario() {
-		return salario;
-	}
-
-	public void setSalario(Double salario) {
-		this.salario = salario;
-	}
-
-	public void adicionarAtendenteFila(int idAtendente) {
-		for (Integer atendente : numeroFila) {
-			if (atendente != null && atendente.equals(idAtendente)) {
-				throw new IllegalStateException("O(a) atendente já está na fila.");
-			}
-		}
-
-		for (int i = 0; i < numeroFila.length; i++) {
-			if (numeroFila[i] == null) {
-				numeroFila[i] = idAtendente;
-				return;
-			}
-		}
-
-		throw new IllegalStateException("A fila já atingiu o tamanho máximo de 9.");
-	}
-
-	public void removerAtendenteFila(int idAtendente) {
-		for (int i = 0; i < numeroFila.length; i++) {
-			if (numeroFila[i] != null && numeroFila[i].equals(idAtendente))
-				if (numeroFila[i] != null) {
-					numeroFila[i] = null;
-					return;
-				}
-		}
-
-		throw new IllegalStateException("A fila já atingiu o tamanho máximo de 9.");
-
+		return Objects.equals(id, other.id);
 	}
 
 	@Override
 	public String toString() {
 		return "Atendente [id=" + id + ", nomeCompleto=" + nomeCompleto + ", salario=" + salario + ", numeroFaltas="
-				+ numeroFaltas + ", ouveFalta=" + ouveFalta + ", numeroFila=" + Arrays.toString(numeroFila) + "]";
+				+ numeroFaltas + ", ouveFalta=" + ouveFalta + ", caixas=" + caixas + "]";
 	}
 
 }

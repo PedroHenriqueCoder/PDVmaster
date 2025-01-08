@@ -13,7 +13,7 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/db_masterpdv
     username: root
-    password: 35828889
+    password: 35828889Ped.
   jpa:
     hibernate:
       ddl-auto: update
