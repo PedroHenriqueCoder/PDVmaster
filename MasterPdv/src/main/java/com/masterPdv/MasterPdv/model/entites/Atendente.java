@@ -1,6 +1,5 @@
 package com.masterPdv.MasterPdv.model.entites;
 
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -10,6 +9,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -32,19 +33,22 @@ public class Atendente extends Usuario {
 	private Integer quantidadeVendas;
 
 	@Column(name = "houve_falta")
-	private boolean ouveFalta;
+	private boolean houveFalta;
 
+	@ManyToMany(mappedBy = "atendente")
 	private Set<Caixa> caixas = new HashSet<>();
+	
+	private final static Integer valorMaximoDeCaixa = 9;
 
 	public Atendente(Long id, String nomeCompleto, Double salario, Integer numeroFaltas, Integer quantidadeVendas,
-			boolean ouveFalta, Set<Caixa> caixas) {
+			boolean houveFalta, Set<Caixa> caixas) {
 		super();
 		this.id = id;
 		this.nomeCompleto = nomeCompleto;
 		this.salario = salario;
 		this.numeroFaltas = numeroFaltas;
 		this.quantidadeVendas = quantidadeVendas;
-		this.ouveFalta = ouveFalta;
+		this.houveFalta = houveFalta;
 		this.caixas = caixas;
 	}
 
@@ -84,12 +88,12 @@ public class Atendente extends Usuario {
 		this.numeroFaltas = numeroFaltas;
 	}
 
-	public boolean isOuveFalta() {
-		return ouveFalta;
+	public boolean HouveFalta() {
+		return houveFalta;
 	}
 
-	public void setOuveFalta(boolean ouveFalta) {
-		this.ouveFalta = ouveFalta;
+	public void sethouveFalta(boolean houveFalta) {
+		this.houveFalta = houveFalta;
 	}
 
 	public Set<Caixa> getCaixas() throws Exception {
@@ -160,6 +164,10 @@ public class Atendente extends Usuario {
 		this.salario = salario;
 	}
 
+	public static Integer getValormaximodecaixa() {
+		return valorMaximoDeCaixa;
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -183,7 +191,9 @@ public class Atendente extends Usuario {
 	@Override
 	public String toString() {
 		return "Atendente [id=" + id + ", nomeCompleto=" + nomeCompleto + ", salario=" + salario + ", numeroFaltas="
-				+ numeroFaltas + ", ouveFalta=" + ouveFalta + ", caixas=" + caixas + "]";
+				+ numeroFaltas + ", ouveFalta=" + houveFalta + ", caixas=" + caixas + "]";
 	}
+
+	
 
 }
