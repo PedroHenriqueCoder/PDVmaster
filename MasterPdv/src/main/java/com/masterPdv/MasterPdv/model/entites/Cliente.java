@@ -7,6 +7,8 @@ import java.util.Set;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -17,32 +19,25 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "tb_clientr")
-public class Cliente extends Usuario{
-	
+public class Cliente extends Usuario {
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
-	@DateTimeFormat(iso = ISO.TIME, pattern = "dd/MM/ss:hh")
+
+	@Column(name = "total_de _entrada_caixa")
 	private LocalDateTime horarioDeVistacao;
 	
+	@Column(name = "foi_pago")
+	private boolean pagou;
+
 	@OneToOne
 	private Transacao transacao;
-	
-	@Column(name = "descricao")
-	private String descricaoUsuario;
 
 	@Column(name = "total_pagar")
 	private BigDecimal valorApagar;
+
 	
-	public Cliente(Long id, LocalDateTime horarioDeVistacao, Transacao transacao, String descricaoUsuario, BigDecimal valorApagar) {
-		super();
-		this.id = id;
-		this.horarioDeVistacao = horarioDeVistacao;
-		this.transacao = transacao;
-		this.descricaoUsuario = descricaoUsuario;
-		this.valorApagar = valorApagar;
-	}
 
 	public Long getId() {
 		return id;
@@ -50,6 +45,16 @@ public class Cliente extends Usuario{
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	
+	
+	public boolean isPagou() {
+		return pagou;
+	}
+
+	public void setPagou(boolean pagou) {
+		this.pagou = pagou;
 	}
 
 	public LocalDateTime getHorarioDeVistacao() {
@@ -74,6 +79,14 @@ public class Cliente extends Usuario{
 
 	public void setDescricaoUsuario(String descricaoUsuario) {
 		this.descricaoUsuario = descricaoUsuario;
+	}
+
+	public BigDecimal getValorApagar() {
+		return valorApagar;
+	}
+
+	public void setValorApagar(BigDecimal valorApagar) {
+		this.valorApagar = valorApagar;
 	}
 
 	@Override
@@ -144,9 +157,8 @@ public class Cliente extends Usuario{
 
 	@Override
 	public String toString() {
-		// TODO Auto-generated method stub
-		return super.toString();
+		return "Cliente [id=" + id + ", horarioDeVistacao=" + horarioDeVistacao + ", transacao=" + transacao
+				+ ", descricaoUsuario=" + descricaoUsuario + ", valorApagar=" + valorApagar + "]";
 	}
-	
-	
+
 }

@@ -37,7 +37,7 @@ public class Atendente extends Usuario {
 
 	@ManyToMany(mappedBy = "atendente")
 	private Set<Caixa> caixas = new HashSet<>();
-	
+
 	private final static Integer valorMaximoDeCaixa = 9;
 
 	public Atendente(Long id, String nomeCompleto, Double salario, Integer numeroFaltas, Integer quantidadeVendas,
@@ -72,6 +72,18 @@ public class Atendente extends Usuario {
 		this.nomeCompleto = nomeCompleto;
 	}
 
+	public boolean isHouveFalta() {
+		return houveFalta;
+	}
+
+	public void setHouveFalta(boolean houveFalta) {
+		this.houveFalta = houveFalta;
+	}
+
+	public void setCaixas(Set<Caixa> caixas) {
+		this.caixas = caixas;
+	}
+
 	public Integer getQuantidadeVendas() {
 		return quantidadeVendas;
 	}
@@ -98,7 +110,7 @@ public class Atendente extends Usuario {
 
 	public Set<Caixa> getCaixas() throws Exception {
 		if (caixas.isEmpty())
-			throw new Exception("Não há atendes na caixa!");
+			throw new Exception("OS caixas estão vazios");
 		return caixas;
 	}
 
@@ -167,7 +179,7 @@ public class Atendente extends Usuario {
 	public static Integer getValormaximodecaixa() {
 		return valorMaximoDeCaixa;
 	}
-	
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -193,7 +205,5 @@ public class Atendente extends Usuario {
 		return "Atendente [id=" + id + ", nomeCompleto=" + nomeCompleto + ", salario=" + salario + ", numeroFaltas="
 				+ numeroFaltas + ", ouveFalta=" + houveFalta + ", caixas=" + caixas + "]";
 	}
-
-	
 
 }
