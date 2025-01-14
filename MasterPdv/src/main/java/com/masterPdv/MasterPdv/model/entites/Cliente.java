@@ -4,11 +4,6 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Set;
 
-import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.format.annotation.DateTimeFormat.ISO;
-
-import com.fasterxml.jackson.annotation.JsonFormat;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -18,18 +13,21 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "tb_clientr")
+@Table(name = "tb_clientes")
 public class Cliente extends Usuario {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(name = "total_de _entrada_caixa")
+	@Column(name = "horario_transacou")
 	private LocalDateTime horarioDeVistacao;
-	
+
 	@Column(name = "foi_pago")
 	private boolean pagou;
+	
+	@Column(name = "compra_finalizada")
+	private boolean finalizou;
 
 	@OneToOne
 	private Transacao transacao;
@@ -37,7 +35,19 @@ public class Cliente extends Usuario {
 	@Column(name = "total_pagar")
 	private BigDecimal valorApagar;
 
-	
+	public Cliente(Long id, LocalDateTime horarioDeVistacao, boolean pagou, boolean finalizou, Transacao transacao,
+			BigDecimal valorApagar) {
+		super();
+		this.id = id;
+		this.horarioDeVistacao = horarioDeVistacao;
+		this.pagou = pagou;
+		this.finalizou = finalizou;
+		this.transacao = transacao;
+		this.valorApagar = valorApagar;
+	}
+
+	public Cliente() {
+	}
 
 	public Long getId() {
 		return id;
@@ -47,8 +57,6 @@ public class Cliente extends Usuario {
 		this.id = id;
 	}
 
-	
-	
 	public boolean isPagou() {
 		return pagou;
 	}
@@ -71,14 +79,6 @@ public class Cliente extends Usuario {
 
 	public void setTransacao(Transacao transacao) {
 		this.transacao = transacao;
-	}
-
-	public String getDescricaoUsuario() {
-		return descricaoUsuario;
-	}
-
-	public void setDescricaoUsuario(String descricaoUsuario) {
-		this.descricaoUsuario = descricaoUsuario;
 	}
 
 	public BigDecimal getValorApagar() {
@@ -142,6 +142,16 @@ public class Cliente extends Usuario {
 		// TODO Auto-generated method stub
 		return super.getPermissoes();
 	}
+	
+	
+
+	public boolean foiFinalizado() {
+		return finalizou;
+	}
+
+	public void setfoiFinalizado(boolean finalizou) {
+		this.finalizou = finalizou;
+	}
 
 	@Override
 	public int hashCode() {
@@ -154,11 +164,23 @@ public class Cliente extends Usuario {
 		// TODO Auto-generated method stub
 		return super.equals(obj);
 	}
+	
+	public Cliente clientePreDefifinidoParaTransacoes(Cliente clientePadrao) {
+		Cliente cliente = new Cliente();
+		cliente.setId(0L);
+		cliente.setUsername("Cliente");
+		cliente.setPassword("0000");
+		cliente.setPagou(false);
+		cliente.setfoiFinalizado(false);
+		cliente.setHorarioDeVistacao(LocalDateTime.now());
+		cliente.setValorApagar(BigDecimal.ZERO);
+		return cliente;
+	}
 
 	@Override
 	public String toString() {
-		return "Cliente [id=" + id + ", horarioDeVistacao=" + horarioDeVistacao + ", transacao=" + transacao
-				+ ", descricaoUsuario=" + descricaoUsuario + ", valorApagar=" + valorApagar + "]";
+		return "Cliente [id=" + id + ", horarioDeVistacao=" + horarioDeVistacao + ", pagou=" + pagou + ", transacao="
+				+ transacao + ", valorApagar=" + valorApagar + "]";
 	}
 
 }

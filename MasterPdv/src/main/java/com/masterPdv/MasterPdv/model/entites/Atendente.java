@@ -38,7 +38,7 @@ public class Atendente extends Usuario {
 	@ManyToMany(mappedBy = "atendente")
 	private Set<Caixa> caixas = new HashSet<>();
 
-	private final static Integer valorMaximoDeCaixa = 9;
+	private final static Integer[] valorMaximoDeAtendente = new Integer[9];
 
 	public Atendente(Long id, String nomeCompleto, Double salario, Integer numeroFaltas, Integer quantidadeVendas,
 			boolean houveFalta, Set<Caixa> caixas) {
@@ -176,8 +176,8 @@ public class Atendente extends Usuario {
 		this.salario = salario;
 	}
 
-	public static Integer getValormaximodecaixa() {
-		return valorMaximoDeCaixa;
+	public static Integer getValormaximodeAtendente() {
+		return valorMaximoDeAtendente.length;
 	}
 
 	@Override
